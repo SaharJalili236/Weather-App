@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <input type="text" id="city" placeholder="cologne">
+        <button onclick="getWeather()">Get Weather</button>
+        <div class="weather-info" id="weather-info"></div>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('city').value.trim(); // ✅ اصلاح شده
+            if (!city) {
+                document.getElementById('weather-info').innerHTML = `<p style="color:red;">Please enter a city name</p>`;
+                return;
+            }
+
+            const apiKey = '575560d7bfae073681c6d64ce8c01e0d'; // ✅ جایگزین با API Key معتبر
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`);
+
+            const data = await response.json();
+            const weatherInfo = document.getElementById('weather-info');
+
+            if (data.cod === 200) {
+                weatherInfo.innerHTML = `
+                    <h2>${data.name}, ${data.sys.country}</h2>
+                    <p>Temperature: ${data.main.temp} °C</p>
+                    <p>Weather: ${data.weather[0].description}</p>
+                `;
+            } else {
+                weatherInfo.innerHTML = `<p style="color:red;">City not found</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
