@@ -9,19 +9,29 @@ async function checkWeather(city) {
 
         if (response.status == 404) {
             alert("City not found!");
+            document.querySelector(".city").innerHTML = "Not Found";
         } else {
-            console.log(data); // برای اینکه در کنسول ببینیم اطلاعات می‌آید یا نه
             document.querySelector(".city").innerHTML = data.name;
             document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
             document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
             document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+            console.log("Success:", data);
         }
     } catch (error) {
-        console.error("Error fetching weather:", error);
+        console.error("Error:", error);
     }
 }
 
+// دکمه جستجو
 document.querySelector(".search button").addEventListener("click", () => {
     const city = document.querySelector(".search input").value;
-    checkWeather(city);
+    if(city) checkWeather(city);
+});
+
+// اینتر زدن در کیبورد
+document.querySelector(".search input").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        const city = e.target.value;
+        if(city) checkWeather(city);
+    }
 });
