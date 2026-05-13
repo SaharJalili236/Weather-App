@@ -12,6 +12,7 @@ async function checkWeather(city) {
     } else {
         var data = await response.json();
 
+        // این بخش باید دقیقاً با کلاس‌های فایل HTML یکی باشد
         document.querySelector(".city").innerHTML = data.name;
         document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
         document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
@@ -21,4 +22,11 @@ async function checkWeather(city) {
 
 searchBtn.addEventListener("click", () => {
     checkWeather(searchBox.value);
+});
+
+// برای اینکه با زدن دکمه اینتر هم کار کند
+searchBox.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        checkWeather(searchBox.value);
+    }
 });
